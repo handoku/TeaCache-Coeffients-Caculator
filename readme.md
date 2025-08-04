@@ -1,38 +1,36 @@
 # TeaCache-Coeffients-Caculator
 
-This is a tool/tutorial for calculating the polynomial coefficients of TeaCache.
+This is a tool/tutorial for calculating the rescaling polynomial coefficients of TeaCache.
 
-[TeaCache] is a amazing training-free caching approach for accelerating diffusion transformer model inference. Which acheaves remarkable speedup with negligible image/video quality loss.
+[TeaCache](https://github.com/ali-vilab/TeaCache) is an amazing training-free caching approach for accelerating diffusion transformer model inference, which achieves remarkable speedup with negligible image/video quality loss.
 
-Howerever, it is not that trival to apply it to your own new model for its magic coefficients parameters.
+However, it is not that trivial to apply it to your own model for its magic coefficients parameters.
 
-This tool is designed to ease the pain of finding which feature is more important for caching hidden_states residuals, and to calculate the rescaling coefficients automatically.
+This tool is designed to ease the pain of determining which feature would be better for caching `hidden_states residuals`, and calculating the rescaling coefficients automatically.
 
 ## Usage
 
-Use flux.1-kontext model as an example.
+Use [Flux.1-Kontext](https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev) model as an example. I presume you have already installed the latest diffusers and downloaded the Flux Kontext model.
 
-I presume you have already installed latest diffusers and downloaded the flux kontext model.
+First, we copy the flux transformer forward function from diffusers and modify it to add a hook(our calculator) to collect `features` and `hidden_states residuals`. (Check the `transformer_flux_forward.py`, you can see a few lines of code I added, you may want to capture other features, call `calculator.add_feature` at where you want to)
 
-First, we copy the flux transformer forward function from diffusers, and modify it to add a hook(our calculator) to collect features and hidden_states residuals.(check the `transformer_flux_forward.py`, and you can see lines I added, you may want to capture other features)
+Then, we should pick up some typical user cases as a dataset( which I don't have) for feature sampling, so I use some data from [Intruct-Pix2Pix](https://github.com/timothybrooks/instruct-pix2pix) for the example. If you have your own user cases( which you should), you can use it to collect dedicated `features` and `hidden_states residuals`.
 
-Then, we should pick up some typical user cases as dataset( which I don't have) for feature sampling,, so I use intruct-pix2pix as an example. If you have your own user cases( which you should), you can use it to collect dedicated features and hidden_states residuals.
-
-We will run flux kontext pipeline like follows：
+We will run the Flux Kontext pipeline as follows：
 
 ```bash
 python gen_coefficients.py
 ```
 
-check `gen_coefficients.py`, you can see how to use the calculator to generate the coefficients.
+Check `gen_coefficients.py`, you can see how to use the calculator to generate the coefficients.
 
-finally, you can use the coefficients replace the flux coefficients in `flux_kontext_dit_teacache.py` to accelerate your model inference.
+Finally, you can use the coefficients to replace the flux coefficients in `flux_kontext_dit_teacache.py` to accelerate your model inference.
 
 ```bash
 python inference.py
 ```
 
-lastly, I may misunderstood the TeaCache mechanism, if you have any question, please open an issue or contribute a PR, thanks.
+Lastly, I may have misunderstood the TeaCache mechanism. If you have any questions, please open an issue or contribute a PR. Thanks.
 
 ## Acknowledgement
 
