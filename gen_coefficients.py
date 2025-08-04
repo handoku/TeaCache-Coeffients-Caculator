@@ -9,7 +9,7 @@ from diffusers.utils import load_image
 from .flux_kontext_example.transformer_flux_forward import (
     forward as transformer_flux_forward,
 )
-from .teacache_caculator import TeaCacheCoefficientCaculator
+from .teacache_calculator import TeaCacheCoefficientCaculator
 
 
 @torch.no_grad()

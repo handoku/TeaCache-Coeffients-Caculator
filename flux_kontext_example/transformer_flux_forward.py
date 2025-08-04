@@ -6,7 +6,7 @@ from diffusers.models.modeling_outputs import Transformer2DModelOutput
 from diffusers.utils import USE_PEFT_BACKEND, is_torch_version, logging, scale_lora_layers, unscale_lora_layers
 import torch
 import numpy as np
-from ..teacache_caculator import TeaCacheCoefficientCaculator
+from ..teacache_calculator import TeaCacheCoefficientCaculator
 logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
 def forward(

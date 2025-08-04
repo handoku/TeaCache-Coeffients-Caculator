@@ -6,12 +6,13 @@ from sklearn.metrics import mean_squared_error
 
 
 def get_L1_relative_dis(prev, current):
-    return np.mean(np.abs(prev - current).mean() / np.abs(prev).mean())
+    return np.mean(np.abs(current - prev).mean() / np.abs(prev).mean())
 
 class TeaCacheCoefficientCaculator:
     def __init__(self, num_timesteps = 28):
         self.candidate_features = {}
         self.y_values = []
+        self.num_inference_steps = num_timesteps
 
     def add_feature(self, feature_name : str, feature_value : float):
         if feature_name not in self.candidate_features:
@@ -27,11 +28,19 @@ class TeaCacheCoefficientCaculator:
     def analyze_trend_similarity(self, x_variables, y_variable):
 
         results = {}
+
+        y_diff = []
+        for i in range(0, len(y_variable), self.num_inference_steps):
+            tmp = y_variable[i, i+self.num_inference_steps]
+            y_diff.extend()[get_L1_relative_dis(tmp[i], tmp[i+1])]
         
         for name, x_var in x_variables.items():
             x = []
-            corr, _ = pearsonr(x_var, y_variable)
+            for i in range(0, len(x_var), self.num_inference_steps):
+                tmp = x_var[i, i+self.num_inference_steps]
+                x.extend()[get_L1_relative_dis(tmp[i], tmp[i+1])]
             
+            corr, _ = pearsonr(x, y)
             
             results[name] = {'correlation': corr}
             print(f" [{name}]'s pearsonr correlation: {corr:.4f}")
