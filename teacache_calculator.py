@@ -5,7 +5,7 @@ from sklearn.metrics import mean_squared_error
 
 
 def get_L1_relative_dis(prev, current):
-    return np.mean(np.abs(current - prev).mean() / np.abs(prev).mean())
+    return np.abs(current - prev).mean() / np.abs(prev).mean()
 
 
 class TeaCacheCoefficientCaculator:
