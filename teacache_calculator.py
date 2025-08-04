@@ -34,13 +34,13 @@ class TeaCacheCoefficientCaculator:
         y_diff = []
         for i in range(0, len(y_variable), self.num_inference_steps):
             tmp = y_variable[i:i + self.num_inference_steps]
-            y_diff.extend([get_L1_relative_dis(tmp[i], tmp[i + 1]) for id in range(len(tmp)-1])
+            y_diff.extend([get_L1_relative_dis(tmp[i], tmp[i + 1]) for id in range(len(tmp)-1)]
 
         for name, x_var in x_variables.items():
             x = []
             for i in range(0, len(x_var), self.num_inference_steps):
                 tmp = x_var[i: i + self.num_inference_steps]
-                x.extend([get_L1_relative_dis(tmp[i], tmp[i + 1]) for id in range(len(tmp)-1])
+                x.extend([get_L1_relative_dis(tmp[i], tmp[i + 1]) for id in range(len(tmp)-1)]
 
             corr, _ = pearsonr(x, y)
 
